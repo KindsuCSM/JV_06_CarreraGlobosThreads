@@ -9,30 +9,32 @@ import java.util.List;
 import java.util.Map;
 
 class Carrera extends JPanel {
+    // Listas
     private final List<Globo> globos;
     private List<Color> ordenLlegada = new ArrayList();
+    // Booleanos
     private boolean carreraTerminada = false;
+    // Buffer para pintar los sprites
     private BufferedImage buffer;
-    private FrmPrincipal frmPrincipal;
+    // Interfaz
     private CarreraTerminadaListener listener;
     private JLabel fpsLabel; // Nuevo JLabel para mostrar los FPS
     private long frameCount = 0; // Contador de frames
     private long lastFpsTime = System.currentTimeMillis(); // Tiempo para calcular FPS
     private Image fondo = new ImageIcon(getClass().getResource("/Assets/Fondo/background.png")).getImage();;
+    // Imagenes de globos y de fondo
     private final Image globoAmarillo = new ImageIcon(getClass().getResource("/Assets/Amarillo/amarillo_01.png")).getImage();
     private final Image globoAzul = new ImageIcon(getClass().getResource("/Assets/Azul/azul_01.png")).getImage();
     private final Image globoGris = new ImageIcon(getClass().getResource("/Assets/Gris/gris_01.png")).getImage();
     private final Image globoRojo = new ImageIcon(getClass().getResource("/Assets/Rojo/rojo_01.png")).getImage();
     private final Image globoVerde = new ImageIcon(getClass().getResource("/Assets/Verde/verde_01.png")).getImage();
-
-
+    // Imagenes de explosiones
     private Image spriteExplosionUno;
     private Image SpriteExplosionDos;
 
-    public Carrera(FrmPrincipal frmPrincipal) {
-        this.frmPrincipal = frmPrincipal;
+    // Constructor de la carrera que inicializa buffer y lista de globos
+    public Carrera() {
         globos = new ArrayList<>();
-        //buffer = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_ARGB);
         buffer = new BufferedImage(450, 700, BufferedImage.TYPE_INT_ARGB);
         // Crear el JLabel para los FPS
         fpsLabel = new JLabel("FPS: 0");
@@ -47,6 +49,7 @@ class Carrera extends JPanel {
         this.listener = listener;
     }
 
+    // Funcion para iniciar la carrera de globos
     public void iniciarGlobos() {
         globos.clear(); // Limpiar los globos existentes
         ordenLlegada.clear(); // Limpiar el orden de llegada
@@ -58,7 +61,6 @@ class Carrera extends JPanel {
         globos.add(new Globo(200, 700, 30, Color.GREEN));
         globos.add(new Globo(275, 700, 30, Color.YELLOW));
         globos.add(new Globo(350, 700, 30, Color.LIGHT_GRAY));
-
 
         // Iniciar cada globo como un hilo independiente
         for (Globo globo : globos) {
@@ -83,6 +85,7 @@ class Carrera extends JPanel {
         }).start();
     }
 
+    // Función que pintará la pantalla con los sprites tanto de globo como de globo explotado
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -111,7 +114,6 @@ class Carrera extends JPanel {
         // Suavizamos los bordes (opcional)
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        g2d.drawImage(new ImageIcon("/Assets/Background/background.jpg").getImage(), 0, 0, buffer.getWidth(), buffer.getHeight(), null);
         g2d.drawImage(fondo, 0, 0, this);
 
         // Dibujar todas las globo en el buffer
@@ -147,7 +149,7 @@ class Carrera extends JPanel {
         // Dibujar el buffer en la pantalla
         g.drawImage(buffer, 0, 0, null);
 
-        g2d.dispose(); // Liberar los recursos del Graphics2D
+        g2d.dispose(); // Liberar los recursos
     }
 
     @Override
@@ -155,10 +157,12 @@ class Carrera extends JPanel {
         return new Dimension(450, 700); // Asegurarse de que el panel tenga el tamaño correcto
     }
 
+    // Funcion para parar el globo cuando cliquemos sobre el
     @Override
     public void addNotify() {
         super.addNotify();
         this.addMouseListener(new MouseAdapter() {
+            // Listener para cuando pulsemos
             @Override
             public void mousePressed(MouseEvent e) {
                 int mouseX = e.getX();
@@ -172,6 +176,7 @@ class Carrera extends JPanel {
                 }
             }
 
+            // Listener para cuando dejemos de pulsarlo
             @Override
             public void mouseReleased(MouseEvent e) {
                 int mouseX = e.getX();
@@ -212,6 +217,7 @@ class Carrera extends JPanel {
         }).start();
     }
 
+    // Funcion que obtiene la lista de los globos a medida que lleguen a la meta
     private void verificarGanador() {
         for (Globo globo : globos) {
             if(globo.getY() <= 0 && !ordenLlegada.contains(globo.getColor())) {
@@ -226,6 +232,7 @@ class Carrera extends JPanel {
         }
     }
 
+    // JOptionPane para mostrar el podio
     private void podio() {
         JOptionPane.showMessageDialog(this,
                     "Medalla de oro: " + obtenerNombreColor(ordenLlegada.get(4)) + "\n" +
@@ -234,7 +241,7 @@ class Carrera extends JPanel {
                     "Podio Final", JOptionPane.INFORMATION_MESSAGE);
 
     }
-
+    // Obtenemos el color del globo para mostrarlo en el podio
     private String obtenerNombreColor(Color color) {
         if (color.equals(Color.RED)) {
             return "Rojo";
@@ -247,17 +254,17 @@ class Carrera extends JPanel {
         } else {
             return "Gris";
         }
-
     }
 
+    // Funcion que detiene el avance de los globos
     private void detenerCarrera() {
         for (Globo globo : globos) {
             globo.detener();
         }
     }
 
+    // Opcion que da valor a las rutas de las explosiones
     public void actualizarExplosion(Globo globo) {
-        String color = obtenerNombreColor(globo.getColor()); // Obtener nombre del color
         spriteExplosionUno = new ImageIcon(getClass().getResource("/Assets/" + globo.cadenaColor() + "/" + globo.cadenaColor().toLowerCase() + "_03.png")).getImage();
         SpriteExplosionDos = new ImageIcon(getClass().getResource("/Assets/" + globo.cadenaColor() + "/" + globo.cadenaColor().toLowerCase() + "_05.png")).getImage();
     }
