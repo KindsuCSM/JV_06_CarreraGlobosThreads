@@ -11,19 +11,25 @@ class Carrera extends JPanel {
     private List<Color> ordenLlegada = new ArrayList();
     private boolean carreraTerminada = false;
     private BufferedImage buffer;
+    private FrmPrincipal frmPrincipal;
     private final Image globoAmarillo = new ImageIcon(getClass().getResource("/Assets/Amarillo/amarillo_01.png")).getImage();
     private final Image globoAzul = new ImageIcon(getClass().getResource("/Assets/Azul/azul_01.png")).getImage();
     private final Image globoGris = new ImageIcon(getClass().getResource("/Assets/Gris/gris_01.png")).getImage();
     private final Image globoRojo = new ImageIcon(getClass().getResource("/Assets/Rojo/rojo_01.png")).getImage();
     private final Image globoVerde = new ImageIcon(getClass().getResource("/Assets/Verde/verde_01.png")).getImage();
 
-    public Carrera() {
+    public Carrera(FrmPrincipal frmPrincipal) {
+        this.frmPrincipal = frmPrincipal;
         globos = new ArrayList<>();
         //buffer = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_ARGB);
         buffer = new BufferedImage(450, 700, BufferedImage.TYPE_INT_ARGB);
     }
 
     public void iniciarGlobos() {
+        globos.clear();
+        ordenLlegada.clear();
+        carreraTerminada = false;
+
         // Crear varias globos con posiciones y colores diferentes
         globos.add(new Globo(50, 700, 30, Color.RED));
         globos.add(new Globo(125, 700, 30, Color.BLUE));
@@ -106,6 +112,7 @@ class Carrera extends JPanel {
                     carreraTerminada = true;
                     detenerCarrera();
                     podio();
+                    frmPrincipal.btnStart.setEnabled(true);
                 }
             }
         }

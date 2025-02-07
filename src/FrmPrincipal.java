@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class FrmPrincipal extends JFrame {
+    public JButton btnStart;
+    private Carrera panelCarrera;
     public FrmPrincipal() {
         setTitle("Carrera de Bolas");
         setSize(450, 700);
@@ -10,23 +12,31 @@ public class FrmPrincipal extends JFrame {
         setResizable(false);
 
         // Crear el panel personalizado
-        Carrera panel = new Carrera();
+        panelCarrera = new Carrera(this);
         setLayout(new BorderLayout());
-        add(panel, BorderLayout.CENTER); // Agregar el panel al JFrame
+        add(panelCarrera, BorderLayout.CENTER); // Agregar el panel al JFrame
 
 
-        JButton startButton = new JButton("Iniciar Carrera");
-        startButton.addActionListener(e -> panel.iniciarGlobos());
+        btnStart = new JButton("Iniciar Carrera");
         JPanel panelBoton = new JPanel();
         panelBoton.setLayout(new FlowLayout(FlowLayout.CENTER));
-        panelBoton.add(startButton);
+        panelBoton.add(btnStart);
         add(panelBoton, BorderLayout.SOUTH);
+
+        initListeners();
+        this.setVisible(true);
+    }
+
+    public void initListeners(){
+        btnStart.addActionListener(e -> {
+            panelCarrera.iniciarGlobos();
+            btnStart.setEnabled(false);
+        });
     }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             FrmPrincipal frame = new FrmPrincipal();
-            frame.setVisible(true);
         });
     }
 }
