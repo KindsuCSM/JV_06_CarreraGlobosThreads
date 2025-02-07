@@ -59,6 +59,8 @@ public class FrmPrincipal extends JFrame implements CarreraTerminadaListener{
         // Establecer el listener para notificar cuando la carrera termina
         panelCarrera.setCarreraTerminadaListener(this);
 
+
+
     }
 
     @Override

@@ -15,12 +15,16 @@ class Carrera extends JPanel {
     private BufferedImage buffer;
     private FrmPrincipal frmPrincipal;
     private CarreraTerminadaListener listener;
+    private JLabel fpsLabel; // Nuevo JLabel para mostrar los FPS
+    private long frameCount = 0; // Contador de frames
+    private long lastFpsTime = System.currentTimeMillis(); // Tiempo para calcular FPS
     private Image fondo = new ImageIcon(getClass().getResource("/Assets/Fondo/background.png")).getImage();;
     private final Image globoAmarillo = new ImageIcon(getClass().getResource("/Assets/Amarillo/amarillo_01.png")).getImage();
     private final Image globoAzul = new ImageIcon(getClass().getResource("/Assets/Azul/azul_01.png")).getImage();
     private final Image globoGris = new ImageIcon(getClass().getResource("/Assets/Gris/gris_01.png")).getImage();
     private final Image globoRojo = new ImageIcon(getClass().getResource("/Assets/Rojo/rojo_01.png")).getImage();
     private final Image globoVerde = new ImageIcon(getClass().getResource("/Assets/Verde/verde_01.png")).getImage();
+
 
     private Image spriteExplosionUno;
     private Image SpriteExplosionDos;
@@ -30,6 +34,13 @@ class Carrera extends JPanel {
         globos = new ArrayList<>();
         //buffer = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_ARGB);
         buffer = new BufferedImage(450, 700, BufferedImage.TYPE_INT_ARGB);
+        // Crear el JLabel para los FPS
+        fpsLabel = new JLabel("FPS: 0");
+        fpsLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        fpsLabel.setForeground(Color.BLACK);
+        fpsLabel.setBounds(10, 550, 100, 20); // Posición absoluta
+        setLayout(null);
+        add(fpsLabel); // Agregar el JLabel al panel
     }
 
     public void setCarreraTerminadaListener(CarreraTerminadaListener listener) {
@@ -75,6 +86,17 @@ class Carrera extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        // Incrementar el contador de frames
+        frameCount++;
+
+        // Calcular los FPS cada segundo
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - lastFpsTime >= 1000) { // Cada segundo
+            int fps = (int) (frameCount * 1000 / (currentTime - lastFpsTime));
+            fpsLabel.setText("FPS: " + fps); // Actualizar el texto del JLabel
+            frameCount = 0; // Reiniciar el contador
+            lastFpsTime = currentTime; // Actualizar el tiempo
+        }
 
         // Asegurarse de que el buffer está creado
         if (buffer == null) {
@@ -126,6 +148,11 @@ class Carrera extends JPanel {
         g.drawImage(buffer, 0, 0, null);
 
         g2d.dispose(); // Liberar los recursos del Graphics2D
+    }
+
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(450, 700); // Asegurarse de que el panel tenga el tamaño correcto
     }
 
     @Override
