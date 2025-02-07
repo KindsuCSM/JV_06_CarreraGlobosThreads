@@ -2,26 +2,28 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 class Carrera extends JPanel {
     private final List<Globo> globos;
     private List<Color> ordenLlegada = new ArrayList();
     private boolean carreraTerminada = false;
+
     private BufferedImage buffer;
     private FrmPrincipal frmPrincipal;
+
     private final Image globoAmarillo = new ImageIcon(getClass().getResource("/Assets/Amarillo/amarillo_01.png")).getImage();
     private final Image globoAzul = new ImageIcon(getClass().getResource("/Assets/Azul/azul_01.png")).getImage();
     private final Image globoGris = new ImageIcon(getClass().getResource("/Assets/Gris/gris_01.png")).getImage();
     private final Image globoRojo = new ImageIcon(getClass().getResource("/Assets/Rojo/rojo_01.png")).getImage();
     private final Image globoVerde = new ImageIcon(getClass().getResource("/Assets/Verde/verde_01.png")).getImage();
 
+    private Image spriteExplosionUno;
+    private Image SpriteExplosionDos;
+
     public Carrera(FrmPrincipal frmPrincipal) {
         this.frmPrincipal = frmPrincipal;
         globos = new ArrayList<>();
-        //buffer = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_ARGB);
         buffer = new BufferedImage(450, 700, BufferedImage.TYPE_INT_ARGB);
     }
 
@@ -74,6 +76,9 @@ class Carrera extends JPanel {
         // Suavizamos los bordes (opcional)
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
+        g2d.drawImage(new ImageIcon("/Assets/Background/background.jpg").getImage(), 0, 0, buffer.getWidth(), buffer.getHeight(), null);
+
+
 
         // Dibujar todas las globo en el buffer
         for (Globo globo : globos) {
@@ -83,19 +88,26 @@ class Carrera extends JPanel {
             int width = globoRojo.getWidth(null);
             int height = globoRojo.getHeight(null);
 
-            if(globo.getColor() == Color.RED) {
-                g2d.drawImage(globoRojo, x, y, width, height, null);
-            }else if(globo.getColor() == Color.BLUE) {
-                g2d.drawImage(globoAzul, x, y, width, height, null);
-            }else if(globo.getColor() == Color.GREEN) {
-                g2d.drawImage(globoVerde, x, y, width, height, null);
-            }else if (globo.getColor() == Color.YELLOW) {
-                g2d.drawImage(globoAmarillo, x, y, width, height, null);
-            }else if(globo.getColor() == Color.LIGHT_GRAY) {
-                g2d.drawImage(globoGris, x, y, width, height, null);
+            if (globo.isExplotado()) {
+                // Si ha explotado, dibujamos explosion
+                actualizarExplosion(globo);
+                g2d.drawImage(spriteExplosionUno, x, y, width, height, null);
+                g2d.drawImage(SpriteExplosionDos, x, y, width, height, null);
+            } else {
+                // Si no ha explotado, dibujamos el globo 1
+                if (globo.getColor() == Color.RED) {
+                    g2d.drawImage(globoRojo, x, y, width, height, null);
+                } else if (globo.getColor() == Color.BLUE) {
+                    g2d.drawImage(globoAzul, x, y, width, height, null);
+                } else if (globo.getColor() == Color.GREEN) {
+                    g2d.drawImage(globoVerde, x, y, width, height, null);
+                } else if (globo.getColor() == Color.YELLOW) {
+                    g2d.drawImage(globoAmarillo, x, y, width, height, null);
+                } else if (globo.getColor() == Color.LIGHT_GRAY) {
+                    g2d.drawImage(globoGris, x, y, width, height, null);
+                }
             }
         }
-
 
         // Dibujar el buffer en la pantalla
         g.drawImage(buffer, 0, 0, null);
@@ -107,6 +119,8 @@ class Carrera extends JPanel {
         for (Globo globo : globos) {
             if(globo.getY() <= 0 && !ordenLlegada.contains(globo.getColor())) {
                 ordenLlegada.add(globo.getColor());
+                globo.explotar();
+
 
                 if(ordenLlegada.size() == globos.size()) {
                     carreraTerminada = true;
@@ -120,9 +134,9 @@ class Carrera extends JPanel {
 
     private void podio() {
         JOptionPane.showMessageDialog(this,
-                    "Primero: " + obtenerNombreColor(ordenLlegada.get(0)) + "\n" +
-                    "Segundo: " + obtenerNombreColor(ordenLlegada.get(1)) + "\n" +
-                    "Tercero: " + obtenerNombreColor(ordenLlegada.get(2)),
+                    "Medalla de oro: " + obtenerNombreColor(ordenLlegada.get(0)) + "\n" +
+                    "Medalla de plata: " + obtenerNombreColor(ordenLlegada.get(1)) + "\n" +
+                    "Medalla de bronce: " + obtenerNombreColor(ordenLlegada.get(2)),
                     "Podio Final", JOptionPane.INFORMATION_MESSAGE);
 
     }
@@ -139,12 +153,17 @@ class Carrera extends JPanel {
         } else {
             return "Gris";
         }
-
     }
 
     private void detenerCarrera() {
         for (Globo globo : globos) {
             globo.detener();
         }
+    }
+
+    public void actualizarExplosion(Globo globo) {
+        String color = obtenerNombreColor(globo.getColor()); // Obtener nombre del color
+        spriteExplosionUno = new ImageIcon(getClass().getResource("/Assets/" + globo.cadenaColor() + "/" + globo.cadenaColor().toLowerCase() + "_03.png")).getImage();
+        SpriteExplosionDos = new ImageIcon(getClass().getResource("/Assets/" + globo.cadenaColor() + "/" + globo.cadenaColor().toLowerCase() + "_05.png")).getImage();
     }
 }
