@@ -1,19 +1,25 @@
+package View;
+
+import Controller.Carrera;
+import Controller.CarreraTerminadaListener;
+import Model.Techo;
+
 import javax.swing.*;
 import java.awt.*;
 
-public class FrmPrincipal extends JFrame implements CarreraTerminadaListener{
-    private JButton startButton; // Botón "Iniciar Carrera"
+public class FrmPrincipal extends JFrame implements CarreraTerminadaListener {
+    private JButton startButton; // Botón "Iniciar Controller.Carrera"
     public JButton vientoButton; // Botón "Viento"
     private Carrera panelCarrera; // Referencia al panel de la carrera
     private JPanel panelBoton;
     public FrmPrincipal() {
-        setTitle("Carrera de GLOBOS");
+        setTitle("Controller.Carrera de GLOBOS");
         setSize(450, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
 
-        // Crear PanelFondo
+        // Crear View.PanelFondo
         PanelFondo fondoPanel = new PanelFondo();
 
         // Crear el panel del techo con una imagen fija
@@ -66,7 +72,7 @@ public class FrmPrincipal extends JFrame implements CarreraTerminadaListener{
     @Override
     public void onCarreraTerminada() {
         vientoButton.setVisible(false); // Ocultar el botón "Viento"
-        startButton.setVisible(true); // Mostrar el botón "Iniciar Carrera"
+        startButton.setVisible(true); // Mostrar el botón "Iniciar Controller.Carrera"
     }
 
     public static void main(String[] args) {

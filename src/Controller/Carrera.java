@@ -1,14 +1,16 @@
+package Controller;
+
+import Model.Globo;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
-class Carrera extends JPanel {
+public class Carrera extends JPanel {
     // Listas
     private final List<Globo> globos;
     private List<Color> ordenLlegada = new ArrayList();
@@ -226,6 +228,7 @@ class Carrera extends JPanel {
 
     // Funcion que obtiene la lista de los globos a medida que lleguen a la meta
     private void verificarGanador() {
+
         for (Globo globo : globos) {
             if(globo.getY() <= 0 && !ordenLlegada.contains(globo.getColor())) {
                 ordenLlegada.add(globo.getColor());

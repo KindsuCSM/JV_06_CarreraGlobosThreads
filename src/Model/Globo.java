@@ -1,4 +1,5 @@
-import javax.swing.*;
+package Model;
+
 import java.awt.*;
 
 public class Globo extends Thread {
@@ -28,7 +29,6 @@ public class Globo extends Thread {
             if (!pausado) {
                 y -= (int)(Math.random() * 3) + 2;
                 x += (int) (Math.sin(offset) * 2);
-
                 offset += 0.2;
             }
 
