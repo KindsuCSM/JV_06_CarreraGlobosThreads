@@ -31,6 +31,9 @@ class Carrera extends JPanel {
     // Imagenes de explosiones
     private Image spriteExplosionUno;
     private Image SpriteExplosionDos;
+    private Image SpriteExplosionTres;
+    private Image SpriteExplosionCuatro;
+    private Image SpriteExplosionCinco;
 
     // Constructor de la carrera que inicializa buffer y lista de globos
     public Carrera() {
@@ -127,8 +130,11 @@ class Carrera extends JPanel {
             if (globo.isExplotado()) {
                 // Si ha explotado, dibujamos explosion
                 actualizarExplosion(globo);
-                g2d.drawImage(spriteExplosionUno, x, y, width, height, null);
-                g2d.drawImage(SpriteExplosionDos, x, y, width, height, null);
+                //g2d.drawImage(spriteExplosionUno, x, y, width, height, null);
+                //g2d.drawImage(SpriteExplosionDos, x, y, width, height, null);
+                g2d.drawImage(SpriteExplosionTres, x, y, width, height, null);
+                //g2d.drawImage(SpriteExplosionCuatro, x, y, width, height, null);
+                g2d.drawImage(SpriteExplosionCinco, x, y, width, height, null);
             } else {
                 // Si no ha explotado, dibujamos el globo 1
                 if (globo.getColor() == Color.RED) {
@@ -265,7 +271,13 @@ class Carrera extends JPanel {
 
     // Opcion que da valor a las rutas de las explosiones
     public void actualizarExplosion(Globo globo) {
-        spriteExplosionUno = new ImageIcon(getClass().getResource("/Assets/" + globo.cadenaColor() + "/" + globo.cadenaColor().toLowerCase() + "_03.png")).getImage();
-        SpriteExplosionDos = new ImageIcon(getClass().getResource("/Assets/" + globo.cadenaColor() + "/" + globo.cadenaColor().toLowerCase() + "_05.png")).getImage();
+
+        spriteExplosionUno = new ImageIcon(getClass().getResource("/Assets/" + globo.cadenaColor() + "/" + globo.cadenaColor().toLowerCase() + "_01.png")).getImage();
+        SpriteExplosionDos = new ImageIcon(getClass().getResource("/Assets/" + globo.cadenaColor() + "/" + globo.cadenaColor().toLowerCase() + "_02.png")).getImage();
+        SpriteExplosionTres = new ImageIcon(getClass().getResource("/Assets/" + globo.cadenaColor() + "/" + globo.cadenaColor().toLowerCase() + "_03.png")).getImage();
+        SpriteExplosionCuatro = new ImageIcon(getClass().getResource("/Assets/" + globo.cadenaColor() + "/" + globo.cadenaColor().toLowerCase() + "_04.png")).getImage();
+        SpriteExplosionCinco = new ImageIcon(getClass().getResource("/Assets/" + globo.cadenaColor() + "/" + globo.cadenaColor().toLowerCase() + "_05.png")).getImage();
+        SpriteExplosionCinco = new ImageIcon(getClass().getResource("/Assets/" + globo.cadenaColor() + "/" + globo.cadenaColor().toLowerCase() + "_06.png")).getImage();
+
     }
 }
