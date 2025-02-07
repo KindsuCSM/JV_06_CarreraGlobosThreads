@@ -201,8 +201,8 @@ class Carrera extends JPanel {
 
     private void podio() {
         JOptionPane.showMessageDialog(this,
-                    "Medalla de oro: " + obtenerNombreColor(ordenLlegada.get(0)) + "\n" +
-                    "Medalla de plata: " + obtenerNombreColor(ordenLlegada.get(1)) + "\n" +
+                    "Medalla de oro: " + obtenerNombreColor(ordenLlegada.get(4)) + "\n" +
+                    "Medalla de plata: " + obtenerNombreColor(ordenLlegada.get(3)) + "\n" +
                     "Medalla de bronce: " + obtenerNombreColor(ordenLlegada.get(2)),
                     "Podio Final", JOptionPane.INFORMATION_MESSAGE);
 

@@ -48,7 +48,7 @@ public class FrmPrincipal extends JFrame implements CarreraTerminadaListener{
         // Panel para los botones
         JPanel panelBoton = new JPanel();
         panelBoton.setLayout(new FlowLayout(FlowLayout.CENTER));
-        panelBoton.setOpaque(false);
+
         panelBoton.add(startButton);
         panelBoton.add(vientoButton);
 
