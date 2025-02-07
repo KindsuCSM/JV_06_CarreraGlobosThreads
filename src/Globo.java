@@ -7,9 +7,11 @@ public class Globo extends Thread {
     private final int tamaño;
     private final Color color;
     private boolean corriendo = true;
+    private boolean pausado = false;
     private static String campeona;
     private double offset = 0;
-    private final int velocidadSubida = 3;
+    private int velocidadSubida = 3;
+    private int velocidadOriginal;
 
 
     public Globo(int x, int y, int tamaño, Color color) {
@@ -22,10 +24,12 @@ public class Globo extends Thread {
     @Override
     public void run() {
         while (corriendo && y > 0) { // Se mueve mientras no alcance el borde derecho
-            y -= velocidadSubida;
-            x += (int) (Math.sin(offset) * 2);;
+            if (!pausado) {
+                y -= velocidadSubida;
+                x += (int) (Math.sin(offset) * 2);
 
-            offset += 0.2;
+                offset += 0.2;
+            }
 
             try {
                 Thread.sleep((int) (Math.random()*25+25)); // Pausa para simular el movimiento
@@ -41,6 +45,14 @@ public class Globo extends Thread {
 
     public void detener() {
         corriendo = false;
+    }
+
+    public boolean contienePunto(int mouseX, int mouseY) {
+        int globoWidth = getTamaño() * 2; // Suponemos que el ancho es proporcional al tamaño
+        int globoHeight = getTamaño() * 2;
+
+        return mouseX >= getX() && mouseX <= getX() + globoWidth &&
+                mouseY >= getY() && mouseY <= getY() + globoHeight;
     }
 
     // Métodos para obtener los datos de la bola
@@ -60,6 +72,37 @@ public class Globo extends Thread {
         return color;
     }
 
+    public boolean getCorriendo() {
+
+        return corriendo;
+    }
+
     public synchronized static String getCampeona () {return campeona;}
 
+
+    public synchronized void pausar() {
+        this.pausado = true;
+    }
+
+    public synchronized void reanudar() {
+        this.pausado = false;
+    }
+
+    public synchronized boolean isPausado() {
+        return pausado;
+    }
+
+    public synchronized void aplicarViento() {
+        if (velocidadSubida > 0) { // Guardar la velocidad original solo si no está ya bajo efecto de viento
+            velocidadOriginal = velocidadSubida;
+            velocidadSubida /= 2; // Dividir la velocidad por 2
+        }
+    }
+
+    public synchronized void revertirViento() {
+        if (velocidadOriginal > 0) { // Restaurar la velocidad original
+            velocidadSubida = velocidadOriginal;
+            velocidadOriginal = 0; // Limpiar la variable de velocidad original
+        }
+    }
 }
