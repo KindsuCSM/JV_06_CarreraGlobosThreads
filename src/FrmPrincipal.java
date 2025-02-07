@@ -21,9 +21,7 @@ public class FrmPrincipal extends JFrame implements CarreraTerminadaListener{
 
 
         // Crear el panel personalizado
-        panelCarrera = new Carrera();
-        
-
+        panelCarrera = new Carrera(this);
         fondoPanel.setLayout(new BorderLayout());
         fondoPanel.add(techoPanel, BorderLayout.NORTH); // Agregar el techo arriba
         fondoPanel.add(panelCarrera, BorderLayout.CENTER); // Agregar el panel de la carrera en el centro

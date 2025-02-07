@@ -9,6 +9,7 @@ public class Globo extends Thread {
     private boolean corriendo = true;
     private boolean pausado = false;
     private static String campeona;
+    private boolean estaExplotado;
     private double offset = 0;
     private int velocidadSubida = 3;
     private int velocidadOriginal;
@@ -36,8 +37,9 @@ public class Globo extends Thread {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            if (y <=0 ) {
-                System.out.println(getCampeona());
+
+            if (y <=0 && !estaExplotado) {
+                estaExplotado = true;
                 corriendo = false;
             }
         }
@@ -78,6 +80,30 @@ public class Globo extends Thread {
     }
 
     public synchronized static String getCampeona () {return campeona;}
+
+    public void explotar() {
+        this.estaExplotado = true;
+    }
+
+    public boolean isExplotado() {
+        return estaExplotado;
+    }
+
+    public String cadenaColor(){
+        if(color == Color.YELLOW){
+            return  "Amarillo";
+        }else if(color == Color.RED){
+            return "Rojo";
+        }else if(color == Color.BLUE){
+            return "Azul";
+        }else if(color == Color.GREEN){
+            return "Verde";
+        }else if(color == Color.LIGHT_GRAY){
+            return "Gris";
+        }else{
+            return "Rojo";
+        }
+    }
 
 
     public synchronized void pausar() {
