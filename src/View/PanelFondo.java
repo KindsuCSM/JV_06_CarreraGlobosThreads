@@ -1,6 +1,7 @@
+package View;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 public class PanelFondo extends JPanel {
     private Image imagenFondo;
