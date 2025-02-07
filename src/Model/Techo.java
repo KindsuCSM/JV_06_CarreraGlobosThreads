@@ -43,7 +43,8 @@ public class Techo extends JPanel implements Runnable {
 
         // Dibujar la imagen fija si está cargada
         if (techo != null) {
-            g.drawImage(fondo, 0, 0, null);
+            g.setColor(new Color(20,51,51));
+            g.fillRect(0, 0, getWidth(), getHeight());
             g.drawImage(techo, 0, 0, getWidth(), getHeight(), this);
         }
     }
