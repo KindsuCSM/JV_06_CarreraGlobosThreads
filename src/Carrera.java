@@ -57,6 +57,7 @@ class Carrera extends JPanel {
         globos.clear(); // Limpiar los globos existentes
         ordenLlegada.clear(); // Limpiar el orden de llegada
         carreraTerminada = false;
+        System.out.println("Iniciada");
 
         // Crear varias globos con posiciones y colores diferentes
         globos.add(new Globo(50, 700, 30, Color.RED));
