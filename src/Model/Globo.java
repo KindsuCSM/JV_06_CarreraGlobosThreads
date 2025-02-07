@@ -25,9 +25,9 @@ public class Globo extends Thread {
 
     @Override
     public void run() {
-        while (corriendo && y > 0) { // Se mueve mientras no alcance el borde derecho
+        while (corriendo && y > 0) { // Se mueve mientras no llegue al techo
             if (!pausado) {
-                y -= velocidadSubida;
+                y -= (int)(Math.random() * 3) + 2;
                 x += (int) (Math.sin(offset) * 2);
                 offset += 0.2;
             }
@@ -48,7 +48,7 @@ public class Globo extends Thread {
     public void detener() {
         corriendo = false;
     }
-
+    // Funcion que se encarga de las coordenadas del raton para comprobar si estas pulsando un globo
     public boolean contienePunto(int mouseX, int mouseY) {
         int globoWidth = getTamaño() * 2; // Suponemos que el ancho es proporcional al tamaño
         int globoHeight = getTamaño() * 2;
